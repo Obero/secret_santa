@@ -43,7 +43,7 @@ class Group(_base):
 
     dudes = relationship("Dude", secondary=dude_participate_group, back_populates="groups")
     letters = relationship('Letter', back_populates="group")
-    owner = relationship("Dude", back_populates="groups_owner")
+    dude_owner = relationship("Dude", back_populates="groups_owner")
 
     def __repr__(self):
         return "<Group(id='%s', name='%s', date='%s')>" % (self.id, self.name, self.date)
