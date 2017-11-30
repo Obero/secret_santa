@@ -28,6 +28,7 @@ class Dude(_base):
     groups = relationship('Group', secondary=dude_participate_group, back_populates="dudes")
     letters = relationship("Letter", back_populates="dude")
     gifts = relationship("Gift", back_populates="dude")
+    groups_owner = relationship("Group", back_populates="owner")
 
     def __repr__(self):
         return "<Dude(id='%s', login='%s', mail='%s')>" % (self.id, self.login, self.mail)
@@ -38,9 +39,11 @@ class Group(_base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     date = Column(Integer, nullable=False)
+    id_dude_owner = Column(Integer, ForeignKey('dudes.id'))
 
     dudes = relationship("Dude", secondary=dude_participate_group, back_populates="groups")
     letters = relationship('Letter', back_populates="group")
+    dude_owner = relationship("Dude", back_populates="groups_owner")
 
     def __repr__(self):
         return "<Group(id='%s', name='%s', date='%s')>" % (self.id, self.name, self.date)
@@ -52,7 +55,6 @@ class Letter(_base):
     uri = Column(String, nullable=False)
     id_group = Column(Integer, ForeignKey('groups.id'))
     id_dude = Column(Integer, ForeignKey('dudes.id'))
-    # id_dude_receiver = Column(Integer, ForeignKey('dudes.id'))
 
     group = relationship("Group", back_populates="letters")
     dude = relationship("Dude", back_populates="letters")
